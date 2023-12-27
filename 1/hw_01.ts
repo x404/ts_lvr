@@ -1,6 +1,6 @@
-type TUnit = {
-    health : number,
-    armor: number
+type TShield = {
+    size: number,
+    resistance: number
 }
 
 type TWeapon = {
@@ -8,34 +8,37 @@ type TWeapon = {
     range: number
 }
 
-// мечник
-type Tblademan = TUnit
-    & {
+type TUnit = {
+    health : number,
+    armor: number
+}
+
+
+type TSword = {
     weapon : TWeapon & {
         wear: number,
         arrows?: never,
     }
 }
-    & {
-    shield: {
-        size: number,
-        resistance: number
-    } | null
+
+type TBow = {
+    weapon : TWeapon & {
+        wear?: never,
+        arrows: number
+    }
+}
+
+// мечник
+type TSwordman = TUnit & TSword & {
+        shield: TShield | null
 };
 
 // лучник
-type Tbowman = TUnit
-    & {
-        weapon : TWeapon & {
-            wear?: never,
-            arrows: number
-        }
-    }
-    & {
+type TBowman = TUnit & TBow & {
         shield: null
-    };
+};
 
-type TUnitRaw = Tblademan | Tbowman;
+type TUnitRaw = TSwordman | TBowman;
 
 type TGroup = {
     units: TUnitRaw[]
@@ -78,7 +81,7 @@ let result: TGroup = {
                 range: 10,
                 arrows: 40,
             },
-            shield:  null
+            shield: null
         }
     ]
 }
